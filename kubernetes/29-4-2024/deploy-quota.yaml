@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: prod-akshay
+  name: prod-akshay
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: prod-akshay
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: prod-akshay
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources: 
+          limits:
+           cpu: 20m
+           memory: 100Mi
+          requests:
+            cpu: 10m
+            memory: 50Mi
+status: {}
+
+---
+
+kubectl create ns (name)
+kubectl get ns 
+kubens --> to swith name space

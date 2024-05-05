@@ -1,0 +1,48 @@
+FROM nginx:1.10.0-alpine
+COPY index.html /usr/share/nginx/html/.
+
+---
+
+FROM ubuntu
+RUN apt-get update && apt-get install -y curl && apt-get install -y openjdk-8-jdk && apt-get install zip -y 
+RUN curl -O https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.100/bin/apache-tomcat-8.5.100.zip
+RUN unzip apache-tomcat-8.5.100.zip
+RUN chmod 700 /apache-tomcat-8.5.100/bin/catalina.sh
+EXPOSE 8080
+CMD ["./apache-tomcat-8.5.100/bin/catalina.sh", "run"]
+
+---
+
+FROM ubuntu 
+COPY apache-tomcat-8.5.100 /tomcat/.
+RUN apt-get update && apt-get install openjdk-8-jdk -y 
+RUN chmod 700 /apache-tomcat-8.5.100/bin/catalina.sh
+EXPOSE 8080
+CMD ["./apache-tomcat-8.5.100/bin/catalina.sh", "run"]
+
+
+---
+
+FROM ubuntu
+COPY tomcat /tomcat/.
+RUN apt-get update && apt-get install openjdk-8-jdk -y && apt-get install -y maven
+COPY student-ui /student-ui/.
+WORKDIR /student-ui
+RUN mvn clean install
+RUN mv target/studentapp-2.2-SNAPSHOT /tomcat/webapps/studentapp
+WORKDIR /tomcat
+RUN chmod 700 /tomcat/bin/catalina.sh
+EXPOSE 8080
+CMD ["./bin/catalina.sh", "run"]
+
+---
+
+FROM ubuntu as builder
+RUN apt-get update && apt-get install openjdk-8-jdk -y && apt-get install -y maven
+COPY student-ui /student-ui/.
+WORKDIR /student-ui
+RUN mvn clean install
+
+FROM tomcat:jre8-alpine
+COPY --from=builder /student-ui/target/*.war /usr/local/tomcat/webapps/student.war
+

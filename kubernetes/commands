@@ -1,0 +1,21 @@
+kubectl get pods
+kubectl get nodes
+kubectl get nodes -w 
+kubectl get nodes -o wide
+
+kubectl create deploy --name nginx-deployment --image=nginx --port=80
+kubectl create deploy --name nginx-deployment --image=nginx --port=80 --replicas=2 
+kubectl create deploy --name nginx-deployment --image=nginx --port=80 --replicas=2  --dry-run=client -o yaml > deploy.yaml
+   45  kubectl expose deploy nginx-deployment --type LoadBalancer --port=8081 --dry-run=client -o yaml > svc.yaml
+   51  kubectl expose deploy nginx-deployment --type NodePort --port=80 --dry-run=client -o yaml > svc.yaml
+
+kubectl create cm nginx-cm --from-file=index.html --dry-run=client -o yaml > cm.yaml
+ kubectl expose deploy nginx-deployment --type LoadBalancer --port=80 --dry-run=client -o yaml > svc.yaml
+
+   57  kubectl create deploy nginx-deployment --image=nginx --port=80 --replicas=1 --dry-run=client -o yaml > nginx-deploy.yaml
+ kubectl create secret  generic secret-nginx --from-file=index.html --dry-run=client -o yaml > secret.yaml
+   45  base64 -d <<< PGgxPgoKaGVsbG8gd29ybGQgCjwvaDE+Cg==
+   51  base64 -d <<< aGVsbG8K
+   52  base64 -d <<< aGVsbG8K
+   53  base64  <<< aGVsbG8K
+   54  base64  <<< hello 

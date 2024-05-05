@@ -1,0 +1,42 @@
+docker pull 
+docker run 
+docker images
+docker run -d {image name}
+docker run -d -P (image name)
+docker kill (container id)
+docker run -d -p 80:80 (image name)
+
+
+32768 -> 32780
+
+
+docker inspect  (container id)
+docker network ls
+docker network create (network name)
+docker volume ls 
+docker stop (container id)
+to change docker command permission-> chown ec2-user: /var/run/docker.sock
+docker exec -it (container id ) bash
+docker rmi -f (image name)
+docker kill (container id )
+## docker system prune -a -f ## 
+
+volumes 
+
+
+FROM
+RUN
+ADD
+COPY
+CMD
+ENTRYPOINT
+ARG
+EXPOSE
+
+MAINTAIN
+
+
+maven -> https://maven.apache.org/archetypes/maven-archetype-simple/
+
+https://github.com/Pritam-Khergade/student-ui/tree/master
+    

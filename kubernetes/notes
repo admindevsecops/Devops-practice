@@ -1,0 +1,15 @@
+role admin access
+
+cluster create 
+    ekctl 
+    kubectl
+
+attach admin role to instance 
+
+aws doc -> https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+eks ctl install -> https://eksctl.io/installation/
+kubectl install -> https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+
+
+command to create cluster -> 
+    eksctl create cluster --name shubham-cluster --region us-east-1 --node-type=t2.medium --nodes=2

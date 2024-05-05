@@ -1,0 +1,31 @@
+  635  ls
+  636  kubectl create deploy jayant --image=nginx --port=80 --replicas=3 --dry-run=client -o yaml > deploy.yaml 
+  637  ls
+  638  kubectl expose -f deploy.yaml --port=80 --dry-run=client -o yaml > svc.yaml  
+  644  kubectl apply -f deploy.yaml  -n anil
+  645  kubectl apply -f svc.yaml -n anil
+  646  kubectl get all
+  647  kubectl exec -it pod/jayant-65cc695c57-5pxr2 curl localhost
+  648  kubectl exec -it svc/jayant -- curl localhost
+  649  git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v3.5
+  651  git clone https://github.com/nginxinc/kubernetes-ingress.git --branch release-3.5
+  652  ls
+  653  cd kubernetes-ingress
+  654  ls
+  655  kubectl apply -f deployments/common/ns-and-sa.yaml
+  656  kubectl get ns
+  657  kubectl apply -f deployments/rbac/rbac.yaml
+  658  kubectl apply -f examples/shared-examples/default-server-secret/default-server-secret.yaml
+  659  kubectl apply -f deployments/common/nginx-config.yaml
+  660  kubectl apply -f deployments/common/ingress-class.yaml
+  661  kubectl apply -f https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.3.2/deploy/crds.yaml
+  662  kubectl apply -f config/crd/bases/k8s.nginx.org_virtualservers.yaml\nkubectl apply -f config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml\nkubectl apply -f config/crd/bases/k8s.nginx.org_transportservers.yaml\nkubectl apply -f config/crd/bases/k8s.nginx.org_policies.yaml\nkubectl apply -f config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
+  663  kubectl apply -f deployments/deployment/nginx-ingress.yaml
+  664  kubectl get all -n nginx-ingress
+  665  kubectl apply -f deployments/service/loadbalancer-aws-elb.yaml
+  666  kubectl get all -n nginx-ingress
+
+
+
+  https://docs.nginx.com/nginx-ingress-controller/installation/installing-nic/installation-with-manifests/
+  

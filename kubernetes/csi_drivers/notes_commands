@@ -1,0 +1,53 @@
+cluster_name=my-cluster
+oidc_id=$(aws eks describe-cluster --name $cluster_name --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+echo $oidc_id
+aws iam list-open-id-connect-providers | grep $oidc_id | cut -d "/" -f4
+eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
+
+
+
+eksctl create iamserviceaccount \
+    --name ebs-csi-controller-sa \
+    --namespace kube-system \
+    --cluster my-cluster \
+    --role-name AmazonEKS_EBS_CSI_DriverRole \
+    --role-only \
+    --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+    --approve
+
+
+eksctl create addon --name aws-ebs-csi-driver --cluster mycluster --service-account-role-arn arn:aws:iam::443684365066:role/AmazonEKS_EBS_CSI_DriverRole --force
+
+#or 
+
+aws eks create-addon --cluster-name my-cluster --addon-name aws-ebs-csi-driver \
+  --service-account-role-arn arn:aws:iam::443684365066:role/AmazonEKS_EBS_CSI_DriverRole
+
+eksctl get addon --name aws-ebs-csi-driver --cluster my-cluster
+
+
+#optional to update
+
+eksctl update addon --name aws-ebs-csi-driver --version --cluster my-cluster \
+  --service-account-role-arn arn:aws:iam::443684365066:role/AmazonEKS_EBS_CSI_DriverRole --force
+
+
+
+
+git clone https://github.com/kubernetes-sigs/aws-ebs-csi-driver.git
+
+cd aws-ebs-csi-driver/examples/kubernetes/dynamic-provisioning/
+
+
+echo "parameters:
+  type: gp3" >> manifests/storageclass.yaml
+
+
+kubectl apply -f manifests/
+
+
+kubectl describe storageclass ebs-sc
+
+
+kubectl get po
+kubectl describe po 
